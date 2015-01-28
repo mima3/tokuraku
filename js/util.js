@@ -117,7 +117,7 @@ var util = (function() {
   }
 
   function _numberSeparator(x) {
-    return String(x).replace( /(\d)(?=(\d\d\d)+(?!\d))/g, '$1,' );
+    return String(x).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
   }
 
   return {
