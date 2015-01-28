@@ -1,0 +1,25 @@
+<div id="header" >
+  <div class="headItem submenu ">
+    <img src="img/history.png" class="btn_icon" alt=""></img>
+    <div class="submenuItem">
+      <ul>
+        <li><a href="chiikikatsudo.html">地域活動データ</a></li>
+        <li><a href="kanji.html">暮らし向きを表す漢字一文字</a></li>
+        <li><a href="kouhukudo.html">幸福度データ</a></li>
+        <li><a href="passenger.html">鉄道各駅乗降客数データ</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+(function() {
+  var submenu = $('#header').find('.submenu');
+  submenu.hover(function() {
+    var item = $(this).find('.submenuItem');
+    item.slideDown(200);
+  },function() {
+    var item = $(this).find('.submenuItem');
+    item.hide();
+  });
+})();
+</script>
