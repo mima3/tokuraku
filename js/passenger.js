@@ -381,27 +381,69 @@ async.parallel([
     .xAxis().ticks(4);
   rowChartYear.render();
 
-  // 定期券タイプのチャート
-  var gpType = dimType.group().reduceSum(
-    function(d) {
-        ret = parseInt(d.count, 10);
-        if (isNaN(ret)) {
-          return 0;
-        }
-        return ret;
-    }
-  );
 
+  var reduceAdvFnc = function(dim) {
+   return dim.group().reduce(
+       function add(p, d) {
+         var v = parseInt(d.count, 10);
+         if (isNaN(v)) {
+           v = 0;
+         }
+         if (p.years[d.year]) {
+           ++p.years[d.year];
+         } else {
+           p.years[d.year] = 1;
+         }
+         p.total += v;
+         return p;
+       },
+       function remove(p, d) {
+         var v = parseInt(d.count, 10);
+         if (isNaN(v)) {
+           v = 0;
+         }
+         if (p.years[d.year]) {
+           --p.years[d.year];
+           if (p.years[d.year] == 0) {
+             delete p.years[d.year];
+           }
+         }
+         p.total -= v;
+         return p;
+       },
+       function init() {
+         return {total: 0, years: {}};
+       }
+     );
+  };
+  function getReduceAdvFncValue(d) {
+    var n = Object.keys(d.value.years).length;
+    return parseInt((d.value.total / n), 10);
+  }
+
+  // 定期券タイプのチャート
   pieChartCommuterPass
     .width(220)
     .height(220)
     .dimension(dimType)
-    .group(gpType)
+    .group(reduceAdvFnc(dimType))
     .slicesCap(2)
     .innerRadius(35)
     .legend(dc.legend())
+    .valueAccessor(function(d) {
+      var n = Object.keys(d.value.years).length;
+      return parseInt((d.value.total / n), 10);
+    })
     .title(function(d) {
-      return d.key + ':' + util.numberSeparator(d.value);
+      var obj;
+      if (d.data) {
+        obj = d.data.value;
+      } else {
+        obj = d.value;
+      }
+      var n = Object.keys(obj.years).length;
+      var x = parseInt((obj.total / n), 10);
+      return d.key + ':' + util.numberSeparator(x);
     })
     .on('filtered', function(chart, filter) {
       // フィルターかかった時のイベント
@@ -410,60 +452,20 @@ async.parallel([
 
   //
   chartBubble = dc.bubbleOverlay('#map').svg(d3.select('#map svg'));
-  var gp = dimStation.group().reduce(
-    function add(p, d) {
-
-      var v = parseInt(d.count, 10);
-      if (isNaN(v)) {
-        v = 0;
-      }
-      if (d.type == '定期') {
-        p.commuterPass += v;
-        ++p.countCommuterPass;
-      } else {
-        p.other += v;
-        ++p.countOther;
-      }
-      return p;
-    },
-    function remove(p, d) {
-      var v = parseInt(d.count, 10);
-      if (isNaN(v)) {
-        v = 0;
-      }
-      if (d.type == '定期') {
-        p.commuterPass -= v;
-        --p.countCommuterPass;
-      } else {
-        p.other -= v;
-        --p.countOther;
-      }
-      return p;
-    },
-    function init() {
-      return {commuterPass: 0, other: 0, countCommuterPass: 0, countOther: 0};
-    }
-  );
   var ext = d3.extent(csvdata, function(d) { return parseInt(d.count);});
   var radiusScale = d3.scale.linear().domain(ext).range([1, 30]);
   chartBubble
     .width(width)
     .height(height)
     .dimension(dimStation)
-    .group(gp)
+    .group(reduceAdvFnc(dimStation))
     .radiusValueAccessor(function(d, i) {
-      var n = d.value.countCommuterPass;
-      if (n < d.value.countOther) {
-        n = d.value.countOther;
-      }
-      return radiusScale(((d.value.commuterPass + d.value.other) / n));
+      var n = Object.keys(d.value.years).length;
+      return radiusScale(d.value.total / n);
     })
     .title(function(d) {
-      var n = d.value.countCommuterPass;
-      if (n < d.value.countOther) {
-        n = d.value.countOther;
-      }
-      var x = parseInt(((d.value.commuterPass + d.value.other) / n), 10);
+      var n = Object.keys(d.value.years).length;
+      var x = parseInt((d.value.total / n), 10);
       return d.key + ' 一日平均の乗降人数:' + util.numberSeparator(x);
     });
   for (var i = 0; i < stations.features.length; ++i) {
