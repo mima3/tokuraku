@@ -165,15 +165,25 @@ td div.train {
   background-color: #3399cc;
 }
 
+.headerTitle {
+  margin-top: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  text-shadow: 2px 2px 1px #999999;
+}
+
 .submenuItem {
   position:absolute;
   top:30px;
+  width: 220px;
+  margin-left:-190px;
   z-index:99999;
   background-color: #efefef;
   border-right:1px solid #663300;
   border-bottom:1px solid #663300;
   background-position:left top;
   display:none;
+  box-shadow: 5px 5px 5px 5px rgba(0,0,0,0.4);
 }
 
 .submenuItem ul{
