@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>鉄道各駅乗降客数データ</title>
+  <link rel="stylesheet" href="js/select2/select2.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="js/dc.js/dc.css"/>
+  <link rel="stylesheet" href="js/jquery/jquery-ui.min.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="base.css"/>
+  <script type="text/javascript" src="js/async/lib/async.js"></script>
+  <script type="text/javascript" src="js/d3/d3.js"></script>
+  <script type="text/javascript" src="js/crossfilter/crossfilter.js"></script>
+  <script type="text/javascript" src="js/dc.js/dc.js"></script>
+  <script type="text/javascript" src="js/jquery/jquery-1.11.1.min.js"></script>
+  <script type="text/javascript" src="js/jquery/jquery-ui-1.10.4.min.js"></script>
+  <script type="text/javascript" src="js/select2/select2.min.js"></script>
+  <script type="text/javascript" src="js/blockui/jquery.blockUI.js"></script>
+  <script type="text/javascript" src="js/util.js"></script>
+</head>
+<body>
+  <div id="contents">
+    <h1>鉄道各駅乗降客数データ</h1>
+    <p>2005年度～2013年度（一年度は4月～3月）　全駅一日平均乗降客数から作成されています。</p>
+    <p>地図はマウスのドラッグにより移動、ホイールにより拡大縮小が可能です。</p>
+    <p>また、各グラフの項目または地図上の駅をクリックすることで、項目のフィルタリングを行えます。</p>
+    <p><buttion id="resetBtn">Reset</buttion></p>
+
+    <p>
+    表示するメッシュ:<select id="selMesh">
+      <option value="" selected>なし</option>
+      <option value="T000608" >平成２２年国勢調査－世界測地系(1KMメッシュ)20101001 人口総数</option>
+      <option value="T000616_people" >平成２１年経済センサス(1KMメッシュ)20090701 全産業従業者数</option>
+      <option value="T000616_business" >平成２１年経済センサス(1KMメッシュ)20090701 全産業事業所数</option>
+    </select>
+    </p>
+    <p>
+    表示する交通機関:<select id="selTransportationFacilities" multiple="multiple">>
+      <option value="train" >鉄道</option>
+      <option value="bus" >バス</option>
+    </select>
+    </p>
+
+    <div class="area">
+      <div id="year" class="chartArea">
+          <p class="chartTitle">調査年</p>
+      </div>
+      <div id="commuterPass" class="chartArea">
+          <p class="chartTitle">定期</p>
+      </div>
+      <div id="map" class="chartArea"></div>
+      <div  style="clear:both;"></div>
+    </div>
+    <script type="text/javascript" src="js/passenger.js"></script>
+    <p>このデータは下記より作成されています。</p>
+    <p><b>「鉄道各駅乗降客数データ」</b></p>
+    <p><a href="http://www.tokyuensen.com/special/contest2014/">http://www.tokyuensen.com/special/contest2014/</a></p>
+    <p>注1．自線内相互乗換人員は除く（ただし、こどもの国線と田園都市線との相互乗換人員は含む）</p>
+    <p>注2．他社線との相互乗換人員及び相互直通運転による通過人員を含む。</p>
+    <p><b>「国土数値情報」</b></p>
+    <p><a href="http://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N03.html">国土数値情報　行政区域データ</a></p>
+    <p><a href="http://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N02-v2_2.html">国土数値情報　鉄道データ</a></p>
+    <p><a href="http://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N07.html">国土数値情報　バスルート</a></p>
+    <p><b>「政府統計の総合窓口」</b></p>
+    <p><a href="http://qiita.com/mima_ita/items/44f358dc1bc4000d365d">http://qiita.com/mima_ita/items/44f358dc1bc4000d365d</a></p>
+    <p>平成２２年国勢調査－世界測地系(1KMメッシュ)20101001</p>
+    <p>平成２１年経済センサス(1KMメッシュ)20090701</p>
+  </div>
+</body>
+</html>

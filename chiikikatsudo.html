@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>地域活動データ</title>
+  <link rel="stylesheet" type="text/css" href="js/dc.js/dc.css"/>
+  <link rel="stylesheet" href="js/jquery/jquery-ui.min.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="base.css"/>
+  <script type="text/javascript" src="js/d3/d3.js"></script>
+  <script type="text/javascript" src="js/d3-cloud/d3.layout.cloud.js"></script>
+  <script type="text/javascript" src="js/crossfilter/crossfilter.js"></script>
+  <script type="text/javascript" src="js/dc.js/dc.js"></script>
+  <script type="text/javascript" src="js/jquery/jquery-1.11.1.min.js"></script>
+  <script type="text/javascript" src="js/jquery/jquery-ui-1.10.4.min.js"></script>
+  <script type="text/javascript" src="js/blockui/jquery.blockUI.js"></script>
+</head>
+<body>
+  <div id="contents">
+    <h1>地域活動データ</h1>
+    <p>このデータは下記の、東急沿線にお住まいの方のアンケート調査結果、「地域活動データ」から作成されています。</p>
+    <p><a href="http://www.tokyuensen.com/special/contest2014/">http://www.tokyuensen.com/special/contest2014/</a></p>
+    <p>各グラフの項目をクリックすることで、項目のフィルタリングを行えます。</p>
+    <p><buttion id="resetBtn">Reset</buttion></p>
+    <div>
+      <div class="area">
+        <p>アンケート実施日：2014年6月</p>
+        <div id="sex" class="chartArea">
+          <p class="chartTitle">性別</p>
+        </div>
+        <div id="age" class="chartArea">
+          <p class="chartTitle">年代</p>
+        </div>
+        <div  style="clear:both;"></div>
+      </div>
+      <div class="area">
+        <p class="areaTitle">行っている地域活動</p>
+        <div id="educationalActivities" class="chartArea">
+          <p class="chartTitle">教育を助ける活動（学校支援ボランティアなど）</p>
+        </div>
+        <div id="childRearingActivities" class="chartArea">
+          <p class="chartTitle">子育てを助ける活動（保育ママなど）</p>
+        </div>
+        <div id="environmentalBeautificationActivities" class="chartArea">
+          <p class="chartTitle">環境美化活動（清掃や緑化等）</p>
+        </div>
+        <div id="communityEventsActivities" class="chartArea">
+          <p class="chartTitle">地域の祭や行事の運営</p>
+        </div>
+        <div id="disasterPreventionActivities" class="chartArea">
+          <p class="chartTitle">防犯・防災・交通安全の活動</p>
+        </div>
+        <div id="careActivities" class="chartArea">
+          <p class="chartTitle">要介護のお年寄りや障害者などを助ける活動</p>
+        </div>
+        <div id="communityActivitiesTime" class="chartArea">
+          <p class="chartTitle">月あたり合計地域活動時間</p>
+        </div>
+        <div  style="clear:both;"></div>
+      </div>
+      <div class="area">
+        <p class="areaTitle">在住地域で関わりたいと思う地域活動</p>
+        <div id="wantToParticipateEducationalActivities" class="chartArea">
+          <p class="chartTitle">教育を助ける活動（学校支援ボランティアなど）</p>
+        </div>
+        <div id="wantToParticipateChildRearingActivities" class="chartArea">
+          <p class="chartTitle">子育てを助ける活動（保育ママなど）</p>
+        </div>
+        <div id="wantToParticipateEnvironmentalBeautificationActivities" class="chartArea">
+          <p class="chartTitle">環境美化活動（清掃や緑化等）</p>
+        </div>
+        <div id="wantToParticipateCommunityEventsActivities" class="chartArea">
+          <p class="chartTitle">地域の祭や行事の運営</p>
+        </div>
+        <div id="wantToParticipateDisasterPreventionActivities" class="chartArea">
+          <p class="chartTitle">防犯・防災・交通安全の活動</p>
+        </div>
+        <div id="wantToParticipateCareActivities" class="chartArea">
+          <p class="chartTitle">要介護のお年寄りや障害者などを助ける活動</p>
+        </div>
+        <div id="wantToParticipateOtherActivites" class="chartArea">
+          <p class="chartTitle">その他</p>
+        </div>
+        <div id="notWantToParticipateActivites" class="chartArea">
+          <p class="chartTitle">いずれの活動も関わりたいと思わない</p>
+        </div>
+        
+        <div  style="clear:both;"></div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" src="js/chiikikatsudo.js"></script>
+</body>
+</html>

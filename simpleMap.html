@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+   <html lang="en">
+      <head>
+         <meta charset="utf-8">
+         <title>D3 Test</title>
+         <script type="text/javascript" src="js/d3/d3.js"></script>
+      </head>
+      <body>
+         <script type="text/javascript">
+// 参考
+// http://shimz.me/blog/d3-js/2351
+// http://shimz.me/blog/d3-js/2526
+var width = 800;
+var height = 600;
+var vbox_x = 0;
+var vbox_y = 0;
+var vbox_default_width = vbox_width = 500;
+var vbox_default_height = vbox_height = 500;
+
+var projection = d3.geo.mercator()
+   .center([139.700, 35.4500])
+   .scale(60000)
+   .translate([width / 2, height / 2]);
+
+//geoJSONのデータをパスに変換する関数を作成
+var path = d3.geo.path().projection(projection); 
+
+//ステージとなるsvgを追加
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height)
+    .attr("viewBox", "" + vbox_x + " " + vbox_y + " " + vbox_width + " " + vbox_height); //viewBox属性を付加
+ 
+
+//geoJSONファイルの読み込み
+d3.json("data/tokyo_kanagawa.geojson", function(json) {
+  return svg.append("svg:g")
+            .attr("class", "tracts")
+            .selectAll("path")
+            .data(json.features)
+            .enter()
+            .append("svg:path")
+            .attr("d", path)
+            .attr("fill", "#ccc")
+            .attr("stroke", "#000");
+});
+
+// ドラッグによる移動
+var drag = d3.behavior.drag().on("drag", function(d) {
+  vbox_x -= d3.event.dx;
+  vbox_y -= d3.event.dy;
+  return svg.attr("translate", "" + vbox_x + " " + vbox_y);
+});
+svg.call(drag);
+
+// ズーム処理
+zoom = d3.behavior.zoom().on("zoom", function(d) {
+  var befere_vbox_width, before_vbox_height, d_x, d_y;
+  befere_vbox_width = vbox_width;
+  before_vbox_height = vbox_height;
+  vbox_width = vbox_default_width * d3.event.scale;
+  vbox_height = vbox_default_height * d3.event.scale;
+  d_x = (befere_vbox_width - vbox_width) / 2;
+  d_y = (before_vbox_height - vbox_height) / 2;
+  vbox_x += d_x;
+  vbox_y += d_y;
+  return svg.attr("viewBox", "" + vbox_x + " " + vbox_y + " " + vbox_width + " " + vbox_height);  //svgタグのviewBox属性を更新
+});
+svg.call(zoom); 
+         </script>
+      </body>
+</html>

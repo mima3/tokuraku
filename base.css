@@ -1,0 +1,243 @@
+@charset "UTF-8";
+a:visited,
+a:link {
+  color: #362b55;
+}
+a:hover {
+  color: #3399cc;
+}
+a:focus {
+    outline: thin dotted #333;
+    outline: 5px auto -webkit-focus-ring-color;
+    outline-offset: -2px;
+}
+a:hover,
+a:active {
+    outline: 0;
+}
+
+img {
+  vertical-align: middle;
+}
+
+textarea {
+    vertical-align: top;
+    font-family: sans-serif;
+    font-size: 10px;
+}
+
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 18px;
+    color: #402d16;
+    line-height: 150%;
+    background-color: #eee9da;
+}
+
+#contents  {
+  margin: 40px 50px;
+
+  padding: 20px 20px 40px;
+  background-color: #fff;
+}
+
+#contents h1  {
+  font-size: 200%;
+  text-align: center;
+  border-bottom: solid 2px #CCC;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+
+h1 {
+    text-align: center;
+    font-size: 200%;
+    margin-top: 5px;
+    margin-bottom: 0;
+}
+
+.btn {    
+    width: 120px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 120%;
+    margin: 40px auto 20px auto;
+    padding: 7px 0;
+}
+.btn_small{
+    width: 120px;
+    text-align: right;
+    font-weight: bold;
+    font-size: 80%;
+    margin: 40px auto 20px auto;
+    padding: 7px 0;
+}
+.btn_big {
+    display: block;
+    width: 120px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 120%;
+    margin: 40px auto 20px auto;
+    padding: 7px 0;
+}
+
+table.dc-chart{
+    border-top:1px solid #663300;
+    border-left:1px solid #663300;
+    border-collapse:collapse;
+    border-spacing:0;
+    background-color:#ffffff;
+    empty-cells:show;
+}
+
+table.dc-chart th{
+    border-right:1px solid #663300;
+    border-bottom:1px solid #663300;
+    color:#330000;
+    background-color:#996633;
+    background-position:left top;
+    padding:0.3em 1em;
+    text-align:center;
+}
+
+table.dc-chart  td{
+    border-right:1px solid #663300;
+    border-bottom:1px solid #663300;
+    padding:0.3em 1em;
+}
+
+.number {
+    text-align: right;
+}
+
+td div.train {
+    border-top:1px solid #cccccc;
+    border-left:1px solid #cccccc;
+    border-right:1px solid #333300;
+    border-bottom:1px solid #333300;
+    padding: 2px 2px;
+}
+/**
+ * ltr言語用
+ */
+.rtl {
+  direction: rtl;
+  /*unicode-bidi:bidi-override;*/
+}
+/**
+ * Header情報
+ */
+#header {
+    /*position: fixed !important;*/  
+    position: absolute;  
+    top: 0;  
+    left: 0;  
+    width: 100%; 
+    border-bottom:3px solid #eee9da;
+    font-size: 100%;
+    background-color:#ffffff;
+    background-position:left top;
+    padding:5px 5px;
+    z-index: 99999;
+}
+
+#header div.headItem{
+  padding: 0 4px;
+  float:left;
+}
+
+#header div.rightItem{
+  padding: 0 4px;
+  float:left;
+}
+
+#header div *{
+  vertical-align: middle;
+}
+
+#header .btn_icon {
+   min-height: 28px;   line-height: 28px;
+}
+#header .btn_icon:hover {
+  background-color: #3399cc;
+}
+
+.submenuItem {
+  position:absolute;
+  top:30px;
+  z-index:99999;
+  background-color: #efefef;
+  border-right:1px solid #663300;
+  border-bottom:1px solid #663300;
+  background-position:left top;
+  display:none;
+}
+
+.submenuItem ul{
+  padding:0 5px 5px 5px;
+  zoom: 1;
+  list-style:none;
+}
+
+.submenuItem ul li{
+  float:none;
+  border-bottom:solid 1px #CCCCCC;
+  padding:5px 0 0 0;
+  margin:0 0 3px 0;
+}
+.submenuItem ul li:last-child{
+  border-bottom:none;
+}
+.submenuItem ul li a{
+  display:block;
+  float:none;
+}
+
+/* border-radius */
+.area {
+  padding:15px 15px 15px 15px;
+  margin: 40px auto 20px auto;
+
+  border-radius:;
+  -webkit-border-radius:;
+  -moz-border-radius:;
+
+  /* box-shadow */
+  box-shadow:rgba(113, 135, 164, 0.77) 0px 0px 6px 3px;
+  -webkit-box-shadow:rgba(113, 135, 164, 0.77) 0px 0px 6px 3px;
+  -moz-box-shadow:rgba(113, 135, 164, 0.77) 0px 0px 6px 3px;
+}
+/* border-radius */
+.chartArea {
+  padding:15px 15px 15px 15px;
+
+  /* border-radius */
+  border-radius:;
+  -webkit-border-radius:;
+  -moz-border-radius:;
+
+  /* box-shadow */
+  box-shadow:rgba(113, 135, 164, 0.65) 4px 7px 5px -1px;
+  -webkit-box-shadow:rgba(113, 135, 164, 0.65) 4px 7px 5px -1px;
+  -moz-box-shadow:rgba(113, 135, 164, 0.65) 4px 7px 5px -1px;
+}
+
+.chartTitle {
+  font-size: 130%;
+  text-align: center;
+  border-bottom: solid 1px #CCC;
+  margin-bottom: 10px;
+  margin-right: 10px;
+}
+
+.areaTitle {
+  font-size: 160%;
+  font-weight: bold;
+  text-align: center;
+  border-bottom: solid 2px #CCC;
+  margin-bottom: 10px;
+  margin-right: 10px;
+}
