@@ -10,8 +10,8 @@ var projection = d3.geo.mercator()
    .translate([width / 2, height / 2]);
 
 var chartBubble;
-var rowChartYear = dc.rowChart("#year");
-var pieChartCommuterPass = dc.pieChart("#commuterPass");
+var rowChartYear = dc.rowChart('#year');
+var pieChartCommuterPass = dc.pieChart('#commuterPass');
 var dimYear;
 var dimStation;
 var dimType;
@@ -23,21 +23,21 @@ var nelng = 139.81;
 
 
 //geoJSONのデータをパスに変換する関数を作成
-var path = d3.geo.path().projection(projection); 
+var path = d3.geo.path().projection(projection);
 
 //ステージとなるsvgを追加
-var svg = d3.select("#map").append("svg")
-    .attr("width", width)
-    .attr("height", height)
-    .attr("viewBox", "" + vbox_x + " " + vbox_y + " " + vbox_width + " " + vbox_height); //viewBox属性を付加
+var svg = d3.select('#map').append('svg')
+    .attr('width', width)
+    .attr('height', height)
+    .attr('viewBox', '' + vbox_x + ' ' + vbox_y + ' ' + vbox_width + ' ' + vbox_height); //viewBox属性を付加
 
 
-var svgMapGrp = svg.append("svg:g");
-var svgMeshGrp = svg.append("svg:g");
-var svgBusGrp = svg.append("svg:g");
-var svgTrainGrp = svg.append("svg:g");
-var svgRailroadGrp = svg.append("svg:g");
-var svgStationroadGrp = svg.append("svg:g");
+var svgMapGrp = svg.append('svg:g');
+var svgMeshGrp = svg.append('svg:g');
+var svgBusGrp = svg.append('svg:g');
+var svgTrainGrp = svg.append('svg:g');
+var svgRailroadGrp = svg.append('svg:g');
+var svgStationroadGrp = svg.append('svg:g');
 var line_color = {
   '東横線': '#da0042',
   '目黒線': '#009ec8',
@@ -47,13 +47,13 @@ var line_color = {
   '東急多摩川線': '#ad0079',
   '世田谷線': '#ad0079',
   'こどもの国線': '#0068b6',
-  'みなとみらい線': 'blue',
+  'みなとみらい線': 'blue'
 };
 
 var stat_dict = {
-  'T000608' : {id:'T000608', attrval: '人口総数'},
-  'T000616_people' : {id:'T000616', attrval: '全産業従業者数'},
-  'T000616_business' : {id:'T000616', attrval: '全産業事業所数'}
+  'T000608' : {id: 'T000608', attrval: '人口総数'},
+  'T000616_people' : {id: 'T000616', attrval: '全産業従業者数'},
+  'T000616_business' : {id: 'T000616', attrval: '全産業事業所数'}
 };
 
 var transportation_dict = {
@@ -92,8 +92,8 @@ $('#selMesh').select2({
 
 $('#selMesh').change(function() {
   svgMeshGrp
-     .attr("class", "tracts")
-     .selectAll("rect")
+     .attr('class', 'tracts')
+     .selectAll('rect')
      .data([])
      .exit()
      .remove();
@@ -106,8 +106,8 @@ $('#selMesh').change(function() {
   function drawMesh(json) {
     console.log(json);
     var max = 0;
-    for (var i=0 ; i < json.features.length; ++i) {
-      var v = parseInt(json.features[i].properties.value)
+    for (var i = 0; i < json.features.length; ++i) {
+      var v = parseInt(json.features[i].properties.value);
       if (max < v) {
         max = v;
       }
@@ -115,42 +115,42 @@ $('#selMesh').change(function() {
     console.log(max);
     var colorScale = d3.scale.linear().domain([0, max]).range([0.0, 0.8]);
     svgMeshGrp
-       .attr("class", "tracts")
-       .selectAll("rect")
+       .attr('class', 'tracts')
+       .selectAll('rect')
        .data(json.features)
        .enter()
-       .append("rect")
-       .attr("x", function(d, i) {
-         var extX = d3.extent(d.geometry.coordinates[0], function (d) { return d[0];});
-         var extY = d3.extent(d.geometry.coordinates[0], function (d) { return d[1];});
+       .append('rect')
+       .attr('x', function(d, i) {
+         var extX = d3.extent(d.geometry.coordinates[0], function(d) { return d[0];});
+         var extY = d3.extent(d.geometry.coordinates[0], function(d) { return d[1];});
          var pt = projection([extX[0], extY[0]]);
          return pt[0];
        })
-       .attr("y", function(d) {
-         var extX = d3.extent(d.geometry.coordinates[0], function (d) { return d[0];});
-         var extY = d3.extent(d.geometry.coordinates[0], function (d) { return d[1];});
+       .attr('y', function(d) {
+         var extX = d3.extent(d.geometry.coordinates[0], function(d) { return d[0];});
+         var extY = d3.extent(d.geometry.coordinates[0], function(d) { return d[1];});
          var pt = projection([extX[0], extY[0]]);
          return pt[1];
        })
-       .attr("width", function(d) {
-         var extX = d3.extent(d.geometry.coordinates[0], function (d) { return d[0];});
-         var extY = d3.extent(d.geometry.coordinates[0], function (d) { return d[1];});
+       .attr('width', function(d) {
+         var extX = d3.extent(d.geometry.coordinates[0], function(d) { return d[0];});
+         var extY = d3.extent(d.geometry.coordinates[0], function(d) { return d[1];});
          var ptMin = projection([extX[0], extY[0]]);
          var ptMax = projection([extX[1], extY[1]]);
          return Math.abs(ptMax[0] - ptMin[0]);
        })
-       .attr("height", function(d) {
-         var extX = d3.extent(d.geometry.coordinates[0], function (d) { return d[0];});
-         var extY = d3.extent(d.geometry.coordinates[0], function (d) { return d[1];});
+       .attr('height', function(d) {
+         var extX = d3.extent(d.geometry.coordinates[0], function(d) { return d[0];});
+         var extY = d3.extent(d.geometry.coordinates[0], function(d) { return d[1];});
          var ptMin = projection([extX[0], extY[0]]);
          var ptMax = projection([extX[1], extY[1]]);
          return Math.abs(ptMax[1] - ptMin[1]);
        })
-       .attr("fill-opacity", function(d) {
+       .attr('fill-opacity', function(d) {
          console.log('color' , d.properties.value, colorScale(d.properties.value));
          return colorScale(d.properties.value);
        })
-       .attr("fill" , "#00f");
+       .attr('fill' , '#00f');
   }
 
   if (stat_dict[sel].json) {
@@ -177,29 +177,29 @@ $('#selTransportationFacilities').select2({
 });
 $('#selTransportationFacilities').change(function() {
   svgBusGrp
-     .selectAll("path")
+     .selectAll('path')
      .data([])
      .exit()
      .remove();
 
   svgTrainGrp
-     .selectAll("path")
+     .selectAll('path')
      .data([])
      .exit()
      .remove();
 
   function drawTransportation(graph, json, color) {
     graph
-      .selectAll("path")
+      .selectAll('path')
       .data(json.features)
       .enter()
-      .append("svg:path")
+      .append('svg:path')
       .attr({
-        "d": path,
-        "fill": "none",
-        "stroke": color,
-        "stroke-width": 1
-      })
+        'd': path,
+        'fill': 'none',
+        'stroke': color,
+        'stroke-width': 1
+      });
 
   }
 
@@ -208,7 +208,7 @@ $('#selTransportationFacilities').change(function() {
     return;
   }
   var blocklist = [];
-  lt.forEach(function(item){
+  lt.forEach(function(item) {
     var info = transportation_dict[item];
     if (transportation_dict[item].json) {
       drawTransportation(
@@ -246,17 +246,17 @@ var load_map = function(callback) {
   );
   d3.json(api, function(json) {
     svgMapGrp
-       .attr("class", "tracts")
-       .selectAll("path")
+       .attr('class', 'tracts')
+       .selectAll('path')
        .data(json.features)
        .enter()
-       .append("svg:path")
+       .append('svg:path')
        .attr({
-         "d" : path,
-         "fill" : "#ccc",
-         "stroke": "#eee"
-       })
-       //.on("click", function(d){
+         'd' : path,
+         'fill' : '#ccc',
+         'stroke': '#eee'
+       });
+       //.on('click', function(d){
        //  console.log(d);
        //});
     console.log('load_map....');
@@ -267,22 +267,22 @@ var load_map = function(callback) {
 
 var load_railroad = function(callback) {
   // 東京急行電鉄管理下の路線情報を取得
-  d3.json("/kokudo/json/get_railroad_section?operationCompany=東京急行電鉄", function(error, json) { 
+  d3.json('/kokudo/json/get_railroad_section?operationCompany=東京急行電鉄', function(error, json) {
     svgRailroadGrp
-      .attr("class", "tracts")
-      .selectAll("path")
+      .attr('class', 'tracts')
+      .selectAll('path')
       .data(json.features)
       .enter()
-      .append("svg:path")
+      .append('svg:path')
       .attr({
-        "d": path,
-        "fill": "none",
-        "stroke-width": 3
+        'd': path,
+        'fill': 'none',
+        'stroke-width': 3
       })
       .attr('stroke', function(d) {
         return line_color[d.properties.railwayLineName];
-      })
-      //.on("click", function(d){
+      });
+      //.on('click', function(d){
       // console.log(d);
       //});
     console.log('load_railroad....');
@@ -293,20 +293,20 @@ var load_railroad = function(callback) {
 
 var load_station = function(callback) {
   // 東京急行電鉄管理下の駅情報を取得
-  d3.json("/kokudo/json/get_station?operationCompany=東京急行電鉄", function(error, json) { 
+  d3.json('/kokudo/json/get_station?operationCompany=東京急行電鉄', function(error, json) {
     svgStationroadGrp
-       .attr("class", "tracts")
-       .selectAll("path")
+       .attr('class', 'tracts')
+       .selectAll('path')
        .data(json.features)
        .enter()
-       .append("svg:path")
+       .append('svg:path')
        .attr({
-         "d": path,
-         "fill": "none",
-         "stroke": "red",
-         "stroke-width": 5
+         'd': path,
+         'fill': 'none',
+         'stroke': 'red',
+         'stroke-width': 5
        })
-       .on("click", function(d){
+       .on('click', function(d) {
          console.log(d);
        });
     console.log('load_station....');
@@ -315,8 +315,9 @@ var load_station = function(callback) {
 };
 
 
+// 駅乗降人数のCSVを読み込む
 var load_passenger = function(callback) {
-  d3.csv("data/passanger.csv", function(error, csvdata) { 
+  d3.csv('data/passanger.csv', function(error, csvdata) {
     console.log('load_passenger....');
     callback(null, csvdata);
   });
@@ -373,12 +374,11 @@ async.parallel([
     .title(function(d) {
       return d.key + ':' + util.numberSeparator(d.value);
     })
-    .on('filtered', function(chart, filter){
+    .on('filtered', function(chart, filter) {
       // フィルターかかった時のイベント
-      //updatePerRadiusValue();
     })
     .elasticX(true)
-    .xAxis().ticks(4)
+    .xAxis().ticks(4);
   rowChartYear.render();
 
   // 定期券タイプのチャート
@@ -403,14 +403,13 @@ async.parallel([
     .title(function(d) {
       return d.key + ':' + util.numberSeparator(d.value);
     })
-    .on('filtered', function(chart, filter){
+    .on('filtered', function(chart, filter) {
       // フィルターかかった時のイベント
-      //updatePerRadiusValue();
     })
     .render();
-  
+
   //
-  chartBubble = dc.bubbleOverlay("#map").svg(d3.select("#map svg"));
+  chartBubble = dc.bubbleOverlay('#map').svg(d3.select('#map svg'));
   var gp = dimStation.group().reduce(
     function add(p, d) {
 
@@ -426,7 +425,7 @@ async.parallel([
         ++p.countOther;
       }
       return p;
-    }, 
+    },
     function remove(p, d) {
       var v = parseInt(d.count, 10);
       if (isNaN(v)) {
@@ -440,44 +439,35 @@ async.parallel([
         --p.countOther;
       }
       return p;
-    }, 
+    },
     function init() {
-      return {commuterPass: 0, other: 0, countCommuterPass:0, countOther:0};
+      return {commuterPass: 0, other: 0, countCommuterPass: 0, countOther: 0};
     }
-  /*
-    function(d) {
-        ret = parseInt(d.count, 10);
-        if (isNaN(ret)) {
-          return 0;
-        }
-        return ret;
-    }
-  */
   );
-  var ext = d3.extent(csvdata, function (d) { return parseInt(d.count);});
+  var ext = d3.extent(csvdata, function(d) { return parseInt(d.count);});
   var radiusScale = d3.scale.linear().domain(ext).range([1, 30]);
   chartBubble
     .width(width)
     .height(height)
     .dimension(dimStation)
     .group(gp)
-    .radiusValueAccessor(function (d, i) {
+    .radiusValueAccessor(function(d, i) {
       var n = d.value.countCommuterPass;
       if (n < d.value.countOther) {
         n = d.value.countOther;
       }
-      return radiusScale(((d.value.commuterPass + d.value.other)/ n));
+      return radiusScale(((d.value.commuterPass + d.value.other) / n));
     })
     .title(function(d) {
       var n = d.value.countCommuterPass;
       if (n < d.value.countOther) {
         n = d.value.countOther;
       }
-      var x = parseInt(((d.value.commuterPass + d.value.other)/ n), 10);
+      var x = parseInt(((d.value.commuterPass + d.value.other) / n), 10);
       return d.key + ' 一日平均の乗降人数:' + util.numberSeparator(x);
     });
-  for(var i=0; i < stations.features.length; ++i) {
-    for(var j=0; j < csvdata.length; ++j) {
+  for (var i = 0; i < stations.features.length; ++i) {
+    for (var j = 0; j < csvdata.length; ++j) {
       if (stations.features[i].properties.stationName == '下高井戸' && csvdata[j].line == '世田谷線') {
         var pt = projection(stations.features[i].geometry.coordinates[0]);
         chartBubble.point(csvdata[j].station, pt[0], pt[1]);
@@ -493,18 +483,16 @@ async.parallel([
 });
 
 
-
-
 // ドラッグによる移動
-var drag = d3.behavior.drag().on("drag", function(d) {
+var drag = d3.behavior.drag().on('drag', function(d) {
   vbox_x -= d3.event.dx;
   vbox_y -= d3.event.dy;
-  return svg.attr("translate", "" + vbox_x + " " + vbox_y);
+  return svg.attr('translate', '' + vbox_x + ' ' + vbox_y);
 });
 svg.call(drag);
 
 // ズーム処理
-zoom = d3.behavior.zoom().on("zoom", function(d) {
+zoom = d3.behavior.zoom().on('zoom', function(d) {
   var befere_vbox_width, before_vbox_height, d_x, d_y;
   befere_vbox_width = vbox_width;
   before_vbox_height = vbox_height;
@@ -514,6 +502,6 @@ zoom = d3.behavior.zoom().on("zoom", function(d) {
   d_y = (before_vbox_height - vbox_height) / 2;
   vbox_x += d_x;
   vbox_y += d_y;
-  return svg.attr("viewBox", "" + vbox_x + " " + vbox_y + " " + vbox_width + " " + vbox_height);  //svgタグのviewBox属性を更新
+  return svg.attr('viewBox', '' + vbox_x + ' ' + vbox_y + ' ' + vbox_width + ' ' + vbox_height);  //svgタグのviewBox属性を更新
 });
-svg.call(zoom); 
+svg.call(zoom);

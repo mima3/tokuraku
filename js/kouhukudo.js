@@ -7,13 +7,13 @@ var dimAge;
 var dimHappiness;
 var m;
 var perRadiusValue; // バブルチャートを描画する際の半径を求める際に使用する係数
-var svg = d3.select("#terms").append("svg")
-    .attr("width", w)
-    .attr("height", h);
-var pieChartSex = dc.pieChart("#sex");
-var pieChartAge = dc.pieChart("#age");
-var rowChartYear = dc.rowChart("#year");
-var pltChartHappiness = dc.bubbleChart("#happiness");
+var svg = d3.select('#terms').append('svg')
+    .attr('width', w)
+    .attr('height', h);
+var pieChartSex = dc.pieChart('#sex');
+var pieChartAge = dc.pieChart('#age');
+var rowChartYear = dc.rowChart('#year');
+var pltChartHappiness = dc.bubbleChart('#happiness');
 
 
 $('#resetBtn').button().click(function() {
@@ -25,7 +25,7 @@ $('#resetBtn').button().click(function() {
 });
 
 $.blockUI({ message: '<img src="/railway_location/img/loading.gif" />' });
-d3.csv("./data/koufukudo_mine.csv", function(error, data) {
+d3.csv('./data/koufukudo_mine.csv', function(error, data) {
   if (error) {
     console.log(error.response);
     $.unblockUI();
@@ -62,12 +62,15 @@ d3.csv("./data/koufukudo_mine.csv", function(error, data) {
     .dimension(dimYear)
     .group(dimYear.group().reduceCount())
     .colors(d3.scale.category10())
-    .on('filtered', function(chart, filter){
+    .on('filtered', function(chart, filter) {
       // フィルターかかった時のイベント
       updatePerRadiusValue();
     })
+    .title(function(d) {
+      return d.key + ':' + util.numberSeparator(d.value);
+    })
     .elasticX(true)
-    .xAxis().ticks(4)
+    .xAxis().ticks(4);
   rowChartYear.render();
 
 
@@ -78,16 +81,18 @@ d3.csv("./data/koufukudo_mine.csv", function(error, data) {
     .dimension(dimSex)
     .group(dimSex.group())
     // 円グラフの分割数の最大値　超えた場合はotherとなる
-    .slicesCap(3) 
+    .slicesCap(3)
     .innerRadius(35)
     // 汎用ラベルの描画
     .legend(dc.legend())
-    .on('filtered', function(chart, filter){
+    .title(function(d) {
+      return d.key + ':' + util.numberSeparator(d.value);
+    })
+    .on('filtered', function(chart, filter) {
       // フィルターかかった時のイベント
       updatePerRadiusValue();
     })
     .render();
-  
 
   // 年代のチャート
   pieChartAge
@@ -97,11 +102,14 @@ d3.csv("./data/koufukudo_mine.csv", function(error, data) {
     .dimension(dimAge)
     .group(dimAge.group())
     // 円グラフの分割数の最大値　超えた場合はotherとなる
-    .slicesCap(20) 
+    .slicesCap(20)
     .innerRadius(35)
     // 汎用ラベルの描画
     .legend(dc.legend().horizontal(true).itemWidth(50).legendWidth(60))
-    .on('filtered', function(chart, filter){
+    .title(function(d) {
+      return d.key + ':' + util.numberSeparator(d.value);
+    })
+    .on('filtered', function(chart, filter) {
       // フィルターかかった時のイベント
       updatePerRadiusValue();
     })
@@ -109,7 +117,7 @@ d3.csv("./data/koufukudo_mine.csv", function(error, data) {
 
 
   console.log(dimHappiness.group().all());
- 
+
   var currentExtent = d3.extent(data, function(d) {
     return parseInt(d.current);
   });
@@ -138,8 +146,8 @@ d3.csv("./data/koufukudo_mine.csv", function(error, data) {
     .radiusValueAccessor(function(d) {
       return d.value * perRadiusValue;
     })
-    .colors(d3.scale.ordinal().domain(["positive","negative", "equal"])
-                                .range(["#00FF00","#FF0000", "#FFFF00"]))
+    .colors(d3.scale.ordinal().domain(['positive', 'negative', 'equal'])
+                                .range(['#00FF00', '#FF0000', '#FFFF00']))
     .colorAccessor(function(d) {
       var cur = parseInt(d.key[0]);
       var aft = parseInt(d.key[1]);
@@ -152,12 +160,12 @@ d3.csv("./data/koufukudo_mine.csv", function(error, data) {
       }
     })
     .title(function(d) {
-      return d.key[0] + '->' + d.key[1] + '\ncount:' + d.value;
+      return d.key[0] + '->' + d.key[1] + '\ncount:' + util.numberSeparator(d.value);
     })
     .renderLabel(false)
-    .xAxisLabel("現在")
+    .xAxisLabel('現在')
     .x(d3.scale.linear().domain(currentExtent))
-    .yAxisLabel("5年後")
+    .yAxisLabel('5年後')
     .y(d3.scale.linear().domain(after5yExtent));
   pltChartHappiness.render();
 

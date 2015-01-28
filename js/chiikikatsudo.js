@@ -4,8 +4,8 @@ var ndx;
 var dimSex;
 var dimAge;
 
-var pieChartSex = dc.pieChart("#sex");
-var pieChartAge = dc.pieChart("#age");
+var pieChartSex = dc.pieChart('#sex');
+var pieChartAge = dc.pieChart('#age');
 var currentChart = [];
 var wantToChart = [];
 
@@ -18,15 +18,15 @@ var actOrderKey = {
   '全くしたことがない' : 1
 };
 var actMonthlyOrderKey = {
-  '全くしていない':1,
-  '1時間以下':2,
-  '3時間以下':3,
-  '6時間以下':4,
-  '1日以下':5,
-  '4日以下':6,
-  '8日以下':7,
-  '12日以下':8,
-  '13日以上':9
+  '全くしていない': 1,
+  '1時間以下': 2,
+  '3時間以下': 3,
+  '6時間以下': 4,
+  '1日以下': 5,
+  '4日以下': 6,
+  '8日以下': 7,
+  '12日以下': 8,
+  '13日以上': 9
 };
 
 $('#resetBtn').button().click(function() {
@@ -43,7 +43,7 @@ $('#resetBtn').button().click(function() {
 
 $.blockUI({ message: '<img src="/railway_location/img/loading.gif" />' });
 
-d3.csv("./data/chiikikatsudo_mine.csv", function(error, data) {
+d3.csv('./data/chiikikatsudo_mine.csv', function(error, data) {
   if (error) {
     console.log(error.response);
     $.unblockUI();
@@ -71,22 +71,28 @@ d3.csv("./data/chiikikatsudo_mine.csv", function(error, data) {
     .dimension(dimSex)
     .group(dimSex.group())
     // 円グラフの分割数の最大値　超えた場合はotherとなる
-    .slicesCap(3) 
+    .slicesCap(3)
     .innerRadius(30)
+    .title(function(d) {
+      return d.key + ':' + util.numberSeparator(d.value);
+    })
     // 汎用ラベルの描画
     .legend(dc.legend())
     .render();
 
   // 年代のチャート
   pieChartAge
-    .width(w+200)
+    .width(w + 200)
     .height(h)
     .dimension(dimAge)
     .cx(200)
     .group(dimAge.group())
     // 円グラフの分割数の最大値　超えた場合はotherとなる
-    .slicesCap(20) 
+    .slicesCap(20)
     .innerRadius(30)
+    .title(function(d) {
+      return d.key + ':' + util.numberSeparator(d.value);
+    })
     // 汎用ラベルの描画
     .legend(dc.legend().horizontal(true).itemWidth(50).legendWidth(60))
     .render();
@@ -119,14 +125,17 @@ function createChart(id, dimName, orderKeys, lblwidth) {
   });
 
   chart
-    .width(w+lblwidth)
+    .width(w + lblwidth)
     .height(h)
     .cx(lblwidth)
     .renderLabel(false)
     .dimension(dim)
     .group(dim.group())
-    .slicesCap(10) 
+    .slicesCap(10)
     .innerRadius(30)
+    .title(function(d) {
+      return d.key + ':' + util.numberSeparator(d.value);
+    })
     .legend(dc.legend())
     .ordering(function(d) {
       console.log(orderKeys[d.key]);
@@ -134,5 +143,5 @@ function createChart(id, dimName, orderKeys, lblwidth) {
     })
     .render();
 
-  return {chart:chart, dim:dim};
+  return {chart: chart, dim: dim};
 }
