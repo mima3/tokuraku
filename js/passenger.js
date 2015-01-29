@@ -29,6 +29,7 @@ var path = d3.geo.path().projection(projection);
 var svg = d3.select('#map').append('svg')
     .attr('width', width)
     .attr('height', height)
+    .attr("overflow", "hidden") // IE系は指定しないとはみ出る
     .attr('viewBox', '' + vbox_x + ' ' + vbox_y + ' ' + vbox_width + ' ' + vbox_height); //viewBox属性を付加
 
 
@@ -157,9 +158,9 @@ $('#selMesh').change(function() {
     drawMesh(stat_dict[sel].json);
   } else {
     $.blockUI({ message: '<img src="/railway_location/img/loading.gif" />' });
-    var api = util.format('/estat/json/get_population?swlat=%d&swlng=%d&nelat=%d&nelng=%d&stat_id=%s&attr_value=%s',
+    var api = encodeURI(util.format('/estat/json/get_population?swlat=%d&swlng=%d&nelat=%d&nelng=%d&stat_id=%s&attr_value=%s',
       swlat, swlng, nelat, nelng, stat_dict[sel].id, stat_dict[sel].attrval
-    );
+    ));
     d3.json(api, function(json) {
       drawMesh(json);
       stat_dict[sel].json = json;
@@ -267,7 +268,7 @@ var load_map = function(callback) {
 
 var load_railroad = function(callback) {
   // 東京急行電鉄管理下の路線情報を取得
-  d3.json('/kokudo/json/get_railroad_section?operationCompany=東京急行電鉄', function(error, json) {
+  d3.json(encodeURI('/kokudo/json/get_railroad_section?operationCompany=東京急行電鉄'), function(error, json) {
     svgRailroadGrp
       .attr('class', 'tracts')
       .selectAll('path')
@@ -293,7 +294,7 @@ var load_railroad = function(callback) {
 
 var load_station = function(callback) {
   // 東京急行電鉄管理下の駅情報を取得
-  d3.json('/kokudo/json/get_station?operationCompany=東京急行電鉄', function(error, json) {
+  d3.json(encodeURI('/kokudo/json/get_station?operationCompany=東京急行電鉄'), function(error, json) {
     svgStationroadGrp
        .attr('class', 'tracts')
        .selectAll('path')

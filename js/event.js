@@ -214,6 +214,7 @@ var path = d3.geo.path().projection(projection);
 
 //ステージとなるsvgを追加
 var svg = d3.select('#map').append('svg')
+    .attr("overflow", "hidden") // IE系は指定しないとはみ出る
     .attr('width', width)
     .attr('height', height)
     .attr('viewBox', '' + vbox_x + ' ' + vbox_y + ' ' + vbox_width + ' ' + vbox_height); //viewBox属性を付加
@@ -302,13 +303,13 @@ var load_railroad = function(callback) {
   // 路線情報の取得
   async.parallel([
     function(cb) {
-      d3.json('/kokudo/json/get_railroad_section?operationCompany=東京急行電鉄', function(error, json) {
+      d3.json(encodeURI('/kokudo/json/get_railroad_section?operationCompany=東京急行電鉄'), function(error, json) {
         console.log(json);
         cb(error, json);
       });
     },
     function(cb) {
-      d3.json('/kokudo/json/get_railroad_section?operationCompany=横浜高速鉄道', function(error, json) {
+      d3.json(encodeURI('/kokudo/json/get_railroad_section?operationCompany=横浜高速鉄道'), function(error, json) {
         console.log(json);
         cb(error, json);
       });
@@ -343,13 +344,13 @@ var load_station = function(callback) {
   // 駅情報の取得
   async.parallel([
     function(cb) {
-      d3.json('/kokudo/json/get_station?operationCompany=東京急行電鉄', function(error, json) {
+      d3.json(encodeURI('/kokudo/json/get_station?operationCompany=東京急行電鉄'), function(error, json) {
         console.log(json);
         cb(error, json);
       });
     },
     function(cb) {
-      d3.json('/kokudo/json/get_station?operationCompany=横浜高速鉄道', function(error, json) {
+      d3.json(encodeURI('/kokudo/json/get_station?operationCompany=横浜高速鉄道'), function(error, json) {
         console.log(json);
         cb(error, json);
       });

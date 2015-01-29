@@ -3,9 +3,13 @@
       <head>
          <meta charset="utf-8">
          <title>D3 Test</title>
+         <link rel="stylesheet" type="text/css" href="base.css"/>
          <script type="text/javascript" src="js/d3/d3.js"></script>
       </head>
       <body>
+         <div id="contents">
+           <div = id="map"></div>
+         </div>
          <script type="text/javascript">
 // 参考
 // http://shimz.me/blog/d3-js/2351
@@ -26,14 +30,16 @@ var projection = d3.geo.mercator()
 var path = d3.geo.path().projection(projection); 
 
 //ステージとなるsvgを追加
-var svg = d3.select("body").append("svg")
+var svg = d3.select("#map").append("svg")
     .attr("width", width)
     .attr("height", height)
+    .attr("overflow", "hidden")
     .attr("viewBox", "" + vbox_x + " " + vbox_y + " " + vbox_width + " " + vbox_height); //viewBox属性を付加
  
 
 //geoJSONファイルの読み込み
-d3.json("data/tokyo_kanagawa.geojson", function(json) {
+d3.json("/kokudo/json/get_administrative_district_by_geometry?swlat=35.45&swlng=139.4&nelat=35.7&nelng=139.81", function(json) {
+  console.log(json);
   return svg.append("svg:g")
             .attr("class", "tracts")
             .selectAll("path")
