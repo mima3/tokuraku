@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>東急沿線イベント情報データ</title>
+  <link rel="stylesheet" href="js/select2/select2.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="js/dc.js/dc.css"/>
+  <link rel="stylesheet" href="js/jquery/jquery-ui.min.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="base.css"/>
+  <script type="text/javascript" src="js/async/lib/async.js"></script>
+  <script type="text/javascript" src="js/d3/d3.js"></script>
+  <script type="text/javascript" src="js/crossfilter/crossfilter.js"></script>
+  <script type="text/javascript" src="js/dc.js/dc.js"></script>
+  <script type="text/javascript" src="js/jquery/jquery-1.11.1.min.js"></script>
+  <script type="text/javascript" src="js/jquery/jquery-ui-1.10.4.min.js"></script>
+  <script type="text/javascript" src="js/select2/select2.min.js"></script>
+  <script type="text/javascript" src="js/blockui/jquery.blockUI.js"></script>
+  <script type="text/javascript" src="js/util.js"></script>
+</head>
+<body>
+  <?php include 'header.html'; ?>
+
+  <div id="contents">
+    <h1>東急沿線イベント情報データ</h1>
+    <p>2013年1月～2014年10月末日までの『とくらく』全掲載イベントデータです。</p>
+    <p>地図はマウスのドラッグにより移動、ホイールにより拡大縮小が可能です。</p>
+    <p>また、各グラフの項目または地図上の駅をクリックすることで、項目のフィルタリングを行えます。</p>
+    <p><buttion id="resetBtn">Reset</buttion></p>
+
+    <div class="area">
+      <div class="chartArea" style="float : left">
+        <p class="chartTitle">日付選択</p>
+        <p>開始日付:<input type="text" id="start_date" size="10" />　　　終了日付:<input type="text" id="end_date" size="10" /></p>
+        <p><buttion id="dateFilterBtn">日付でフィルタ</buttion><buttion id="dateFilterResetBtn">日付フィルタ解除</buttion></p>
+      </div>
+      <div id="category" class="chartArea">
+          <p class="chartTitle">カテゴリー</p>
+      </div>
+      <div  style="clear:both;"></div>
+      <div id="map" class="chartArea"></div>
+      <div  style="clear:both;"></div>
+    </div>
+    <script type="text/javascript" src="js/event.js"></script>
+    <p>このデータは下記より作成されています。</p>
+    <p><b>「東急沿線イベント情報データ」</b></p>
+    <p><a href="http://www.tokyuensen.com/special/contest2014/">http://www.tokyuensen.com/special/contest2014/</a></p>
+    <p><b>「国土数値情報」</b></p>
+    <p><a href="http://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N03.html">国土数値情報　行政区域データ</a></p>
+    <p><a href="http://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N02-v2_2.html">国土数値情報　鉄道データ</a></p>
+  </div>
+</body>
+</html>
