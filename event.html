@@ -18,6 +18,7 @@
   <script type="text/javascript" src="js/select2/select2.min.js"></script>
   <script type="text/javascript" src="js/blockui/jquery.blockUI.js"></script>
   <script type="text/javascript" src="js/jsrender/jsrender.min.js"></script>
+  <script type="text/javascript" src="js/dateformat.js"></script>
   <script type="text/javascript" src="js/util.js"></script>
   <script id="tooltipTmpl" type="text/x-jsrender">
     <p> {{:name}} </p>
@@ -37,12 +38,15 @@
     <p>地図はマウスのドラッグにより移動、ホイールにより拡大縮小が可能です。</p>
     <p>グラフをクリックすることでデータのフィルタリング、地図上のポイントをクリックをすることで詳細の表示がおこなえます。</p>
     <p><buttion id="resetBtn">Reset</buttion></p>
+    <div class="chartArea">
+      <p class="chartTitle">日付選択</p>
+      <p>開始日付:<input type="text" id="start_date" size="10" />　　　終了日付:<input type="text" id="end_date" size="10" /></p>
+      <p><buttion id="dateFilterBtn">日付でフィルタ</buttion><buttion id="dateFilterResetBtn">日付フィルタ解除</buttion></p>
+    </div>
 
     <div class="area">
-      <div class="chartArea" style="float : left">
-        <p class="chartTitle">日付選択</p>
-        <p>開始日付:<input type="text" id="start_date" size="10" />　　　終了日付:<input type="text" id="end_date" size="10" /></p>
-        <p><buttion id="dateFilterBtn">日付でフィルタ</buttion><buttion id="dateFilterResetBtn">日付フィルタ解除</buttion></p>
+      <div id="monthly" class="chartArea">
+          <p class="chartTitle">月別のイベント数</p>
       </div>
       <div id="category" class="chartArea">
           <p class="chartTitle">カテゴリー</p>

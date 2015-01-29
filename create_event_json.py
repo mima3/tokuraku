@@ -26,7 +26,7 @@ def main(argvs, argc):
         item['start_date'] = event.find('start_date').text
         item['end_date'] = event.find('start_date').text
         item['holiday_remarks'] = event.find('holiday_remarks').text
-        item['body'] = event.find('body').text
+        #item['body'] = event.find('body').text
         item['official_url'] = event.find('official_url').text
 
         item['place_free'] = event.find('place_free').text

@@ -11,18 +11,22 @@ var projection = d3.geo.mercator()
 
 var chartBubble;
 var pieChartCategory = dc.pieChart('#category');
+var monthlyChart = dc.rowChart('#monthly');
 
 var event_list;
 var ndx;
 var dimId;
 var dimCategory;
+var dimMonthly;
 var dimDate;
 
+// 範囲
 var swlat = 35.45;
 var swlng = 139.4;
 var nelat = 35.7;
 var nelng = 139.81;
 
+// ツールチップ
 var tip = d3.tip()
   .attr('class', 'd3-tip')
   .offset([-10, 0])
@@ -235,9 +239,14 @@ var line_color = {
 
 $('#resetBtn').button().click(function() {
   // リセットボタン
+  dimDate.filterAll();
+  pieChartCategory.filterAll();
+  monthlyChart.filterAll();
   dc.renderAll();
 });
 
+
+// 日付フィルター処理
 $('#start_date').datepicker({ dateFormat: 'yy/mm/dd' });
 $('#end_date').datepicker({ dateFormat: 'yy/mm/dd' });
 $('#dateFilterBtn').button().click(function() {
@@ -246,7 +255,6 @@ $('#dateFilterBtn').button().click(function() {
   }
   var startDate = $('#start_date').val();
   var endDate = $('#end_date').val();
-  console.log('click:' , startDate, endDate);
   dimDate.filter(function(d) {
     if (startDate <= d[1] && endDate >= d[0]) {
       return true;
@@ -262,6 +270,7 @@ $('#dateFilterResetBtn').button().click(function() {
   dimDate.filterAll();
   dc.renderAll();
 });
+
 
 var load_map = function(callback) {
   // 行政区域の表示を行う
@@ -290,6 +299,7 @@ var load_map = function(callback) {
 
 
 var load_railroad = function(callback) {
+  // 路線情報の取得
   async.parallel([
     function(cb) {
       d3.json('/kokudo/json/get_railroad_section?operationCompany=東京急行電鉄', function(error, json) {
@@ -324,16 +334,13 @@ var load_railroad = function(callback) {
       .attr('stroke', function(d) {
         return line_color[d.properties.railwayLineName];
       });
-      //.on('click', function(d){
-      // console.log(d);
-      //});
-
     callback(null, features);
   });
 };
 
 
 var load_station = function(callback) {
+  // 駅情報の取得
   async.parallel([
     function(cb) {
       d3.json('/kokudo/json/get_station?operationCompany=東京急行電鉄', function(error, json) {
@@ -376,7 +383,6 @@ var load_station = function(callback) {
 };
 
 
-
 // イベント情報を読み込む
 var load_event = function(callback) {
   d3.json('data/event.json', function(error, csvdata) {
@@ -395,8 +401,6 @@ async.parallel([
 ], function(err, ret) {
   $.unblockUI();
   console.log('parallel....');
-  console.log(err);
-  console.log(ret);
   event_list = ret[3];
   ndx = crossfilter(event_list);
 
@@ -408,6 +412,7 @@ async.parallel([
     return [d.start_date, d.end_date];
   });
 
+  // カテゴリーによる分類
   dimCategory = ndx.dimension(function(d) {
     return d.category;
   });
@@ -429,6 +434,7 @@ async.parallel([
       return {};
     }
   ).value();
+
   // hack to make dc.js charts work
   gpCategory.all = function() {
     var newObject = [];
@@ -442,14 +448,8 @@ async.parallel([
     }
     return newObject;
   };
-  gpCategory.top = function(top) {
+  gpCategory.top = gpCategory.all;
 
-    var ret = gpCategory.all();
-    ret.sort(function(a, b){
-      return b.value - a.value;
-    });
-    return ret;
-  };
 
   // カテゴリ―グラフ
   pieChartCategory
@@ -472,7 +472,15 @@ async.parallel([
     })
     .filterHandler(function(dimension, filter){
       dimension.filter(function(d) {
-        return pieChartCategory.filter() != null ? d.indexOf(pieChartCategory.filter()) >= 0 : true;
+        if (pieChartCategory.filters().length == 0) {
+          return true;
+        }
+        for (var i = 0; i < pieChartCategory.filters().length; ++i) {
+          if (d.indexOf(pieChartCategory.filters()[i]) >= 0) {
+            return true;
+          }
+        }
+        return false;
       }); // perform filtering
       return filter; // return the actual filter value
     })
@@ -484,14 +492,120 @@ async.parallel([
     })
     .render();
 
-    var baseClickHandler = pieChartCategory.onClick
-    pieChartCategory.onClick = function(d) {
-      // 待機用の画面表示
-      $.blockUI({ message: '<img src="/railway_location/img/loading.gif" />' });
-      setTimeout(function() {
-        baseClickHandler(d);
-      }, 0)
+  var basePieChartCategoryClickHandler = pieChartCategory.onClick;
+  pieChartCategory.onClick = function(d) {
+    // 待機用の画面表示
+    $.blockUI({ message: '<img src="/railway_location/img/loading.gif" />' });
+    setTimeout(function() {
+      basePieChartCategoryClickHandler(d);
+    }, 0)
+  }
+
+
+  // 月別のグラフ
+  dimMonthly= ndx.dimension(function(d) {
+    return [d.start_date, d.end_date];
+  });
+  var gpMonthly = dimMonthly.groupAll().reduce(
+    function(p, v) {
+      for (var i = 0; i < p.list.length; ++i) {
+        if (v.end_date < p.list[i].start) {
+          // 当月より前に終わっている
+          continue;
+        }
+        if (v.start_date > p.list[i].last) {
+          // 当月にはまだ始まっていない
+          continue;
+        }
+        p.list[i].count += 1;
+      }
+      return p;
+    },
+    function (p, v) {
+      for (var i = 0; i < p.list.length; ++i) {
+        if (v.end_date < p.list[i].start) {
+          // 当月より前に終わっている
+          continue;
+        }
+        if (v.start_date > p.list[i].last) {
+          // 当月にはまだ始まっていない
+          continue;
+        }
+        p.list[i].count -= 1;
+      }
+      return p;
+    },
+    function (p, v) {
+      var extStartDate = d3.extent(event_list, function(d) { return d.start_date;});
+      var extEndDate = d3.extent(event_list, function(d) { return d.end_date;});
+      var start = new Date(extStartDate[0]);
+      var dateFormat = new DateFormat("yyyy/MM/dd");
+      start.setDate(1);
+      var end = new Date(extEndDate[1]);
+      var values = [];
+      while (start < end) {
+        var last = new Date(start);
+        last.setMonth(last.getMonth() + 1);
+        last.setDate(0);
+        values.push({start: dateFormat.format(start), last: dateFormat.format(last), count:0});
+        start.setMonth(start.getMonth() + 1);
+      }
+      return {list:values};
     }
+  ).value();
+  gpMonthly.all = function() {
+    return this.list;
+  };
+  gpMonthly.top = gpCategory.all;
+  monthlyChart
+    .width(300)
+    .height(600)
+    .margins({
+      top: 5, left: 10, right: 10, bottom: 20
+    })
+    .dimension(dimMonthly)
+    .group(gpMonthly)
+    .colors(d3.scale.category10())
+    .valueAccessor(function(d, i) {
+      return d.count;
+    })
+    .keyAccessor(function(d, i) {
+      return d.start;
+    })
+    .label(function(d, i) {
+      return d.start;
+    })
+    .title(function(d, i) {
+      return d.start + ':' + d.count;
+    })
+    .filterHandler(function(dimension, filter){
+      dimension.filter(function(d) {
+        if (monthlyChart.filters().length == 0) {
+          return true;
+        }
+        for (var i = 0; i < monthlyChart.filters().length; ++i) {
+          var chkMonth = monthlyChart.filters()[i].substr(0,7);
+          if (chkMonth <= d[1].substr(0,7) && chkMonth >= d[0].substr(0,7)) {
+            return true;
+          }
+        }
+        return false;
+      }); // perform filtering
+      return filter; // return the actual filter value
+    })
+    .elasticX(true)
+    .xAxis().ticks(4);
+  monthlyChart.render();
+
+  var baseMonthlyChartClickHandler = monthlyChart.onClick;
+  monthlyChart.onClick = function(d) {
+    // 待機用の画面表示
+    $.blockUI({ message: '<img src="/railway_location/img/loading.gif" />' });
+    setTimeout(function() {
+      baseMonthlyChartClickHandler(d);
+    }, 0)
+  }
+
 
   // 地図へのプロット
   chartBubble = plotter('#map').svg(d3.select('#map svg'));
