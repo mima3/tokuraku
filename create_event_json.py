@@ -41,6 +41,8 @@ def main(argvs, argc):
         for holiday in event.xpath('./holiday_list/holiday'):
             item['holiday'].append(holiday.text)
 
+        item['image'] = event.find('image1_url').text
+
         item['station'] = []
         for station in event.xpath('./station_list/station'):
             item['station'].append({

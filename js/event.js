@@ -12,6 +12,7 @@ var projection = d3.geo.mercator()
 var chartBubble;
 var pieChartCategory = dc.pieChart('#category');
 
+var event_list;
 var ndx;
 var dimId;
 var dimCategory;
@@ -21,6 +22,24 @@ var swlat = 35.45;
 var swlng = 139.4;
 var nelat = 35.7;
 var nelng = 139.81;
+
+var tip = d3.tip()
+  .attr('class', 'd3-tip')
+  .offset([-10, 0])
+  .html(function (d) {
+    var n;
+    for (var i = 0 ; i < event_list.length; ++i) {
+      if (event_list[i].id == d.key) {
+        n = event_list[i];
+        break;
+      }
+    }
+    if (!n) {
+      return;
+    }
+    return $('#tooltipTmpl').render(n);
+  }
+);
 
 // dc.bubbleOverlay
 var plotter = function (root, chartGroup) {
@@ -199,7 +218,7 @@ var svg = d3.select('#map').append('svg')
 var svgMapGrp = svg.append('svg:g');
 var svgRailroadGrp = svg.append('svg:g');
 var svgStationroadGrp = svg.append('svg:g');
-var svgEventGrp = svg.append('svg:g');
+
 
 var line_color = {
   '東横線': '#da0042',
@@ -378,7 +397,7 @@ async.parallel([
   console.log('parallel....');
   console.log(err);
   console.log(ret);
-  var event_list = ret[3];
+  event_list = ret[3];
   ndx = crossfilter(event_list);
 
   dimId = ndx.dimension(function(d) {
@@ -424,7 +443,11 @@ async.parallel([
     return newObject;
   };
   gpCategory.top = function(top) {
+
     var ret = gpCategory.all();
+    ret.sort(function(a, b){
+      return b.value - a.value;
+    });
     return ret;
   };
 
@@ -435,6 +458,9 @@ async.parallel([
     .cx(160)
     .dimension(dimCategory)
     .group(gpCategory)
+    .ordering(function(t){
+      return -t.value;
+    })
     .slicesCap(20)
     .innerRadius(35)
     .legend(dc.legend())
@@ -451,11 +477,10 @@ async.parallel([
       return filter; // return the actual filter value
     })
     .title(function(d) {
-      return d.key;
+      return d.key + ':' + d.value;
     })
     .on('postRedraw', function(chart, filter) {
       $.unblockUI();
-      console.log('postRedraw');
     })
     .render();
 
@@ -463,23 +488,10 @@ async.parallel([
     pieChartCategory.onClick = function(d) {
       // 待機用の画面表示
       $.blockUI({ message: '<img src="/railway_location/img/loading.gif" />' });
-      console.log('click');
       setTimeout(function() {
         baseClickHandler(d);
-        console.log('end');
       }, 0)
     }
-
-    /*
-  var baseClickHandler = pieChartCategory.onClick
-  pieChartCategory.onClick = function (d) {
-    setInterval(function() {
-      baseClickHandler(d);
-      console.log('end');
-    }, 0)
-    return true;
-  };
-  */
 
   // 地図へのプロット
   chartBubble = plotter('#map').svg(d3.select('#map svg'));
@@ -492,7 +504,7 @@ async.parallel([
       return d.value;
     })
     .title(function(d) {
-      return "TEST"; // d.key + ' 一日平均の乗降人数:' + util.numberSeparator(x);
+      return '';
     })
     .label(function(d) {
       return '';
@@ -505,37 +517,22 @@ async.parallel([
     var pt = projection([event_list[i].place_longitude, event_list[i].place_latitude]);
     chartBubble.point(event_list[i].id, pt[0], pt[1]);
   }
+
+
   chartBubble.onClick = function(d) {
     // クリックを無効にしておく。
     // 場所による検索はあまり意味がないので。
-    console.log('click' ,d);
+    tip.show(d)
   };
-
   chartBubble.render();
-  /*
-  svgEventGrp
-    .selectAll('circle')
-    .data(event_list)
-    .enter()
-    .append('circle')
-    .attr('cx', function(d, i) {
-      var pt = projection([d.place_longitude, d.place_latitude]);
-      return pt[0];
-    })
-    .attr('cy', function(d) {
-      var pt = projection([d.place_longitude, d.place_latitude]);
-      return pt[1];
-    })
-    .attr('r', function(d) {
-      return 10;
-    })
-    .attr('fill' , '#00f');
-    */
+  d3.selectAll(".node").call(tip);
+
 });
 
 
 // ドラッグによる移動
 var drag = d3.behavior.drag().on('drag', function(d) {
+  tip.hide();
   vbox_x -= d3.event.dx;
   vbox_y -= d3.event.dy;
   return svg.attr('translate', '' + vbox_x + ' ' + vbox_y);
@@ -544,6 +541,7 @@ svg.call(drag);
 
 // ズーム処理
 zoom = d3.behavior.zoom().on('zoom', function(d) {
+  tip.hide();
   var befere_vbox_width, before_vbox_height, d_x, d_y;
   befere_vbox_width = vbox_width;
   before_vbox_height = vbox_height;

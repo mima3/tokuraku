@@ -6,16 +6,27 @@
   <link rel="stylesheet" href="js/select2/select2.css" type="text/css" />
   <link rel="stylesheet" type="text/css" href="js/dc.js/dc.css"/>
   <link rel="stylesheet" href="js/jquery/jquery-ui.min.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="js/d3-tip/d3-tip.css"/>
   <link rel="stylesheet" type="text/css" href="base.css"/>
   <script type="text/javascript" src="js/async/lib/async.js"></script>
   <script type="text/javascript" src="js/d3/d3.js"></script>
+  <script type="text/javascript" src="js/d3-tip/index.js"></script>
   <script type="text/javascript" src="js/crossfilter/crossfilter.js"></script>
   <script type="text/javascript" src="js/dc.js/dc.js"></script>
   <script type="text/javascript" src="js/jquery/jquery-1.11.1.min.js"></script>
   <script type="text/javascript" src="js/jquery/jquery-ui-1.10.4.min.js"></script>
   <script type="text/javascript" src="js/select2/select2.min.js"></script>
   <script type="text/javascript" src="js/blockui/jquery.blockUI.js"></script>
+  <script type="text/javascript" src="js/jsrender/jsrender.min.js"></script>
   <script type="text/javascript" src="js/util.js"></script>
+  <script id="tooltipTmpl" type="text/x-jsrender">
+    <p> {{:name}} </p>
+    {{if image}}
+      <img src="{{:image}}" class="btn_icon" width="280px" alt=""></img>
+    {{/if}}
+    <p> {{:start_date}} ～ {{:end_date}}</p>
+    <p> {{:category}}</p>
+  </script>
 </head>
 <body>
   <?php include 'header.html'; ?>
@@ -24,7 +35,7 @@
     <h1>東急沿線イベント情報データ</h1>
     <p>2013年1月～2014年10月末日までの『とくらく』全掲載イベントデータです。</p>
     <p>地図はマウスのドラッグにより移動、ホイールにより拡大縮小が可能です。</p>
-    <p>また、各グラフの項目または地図上の駅をクリックすることで、項目のフィルタリングを行えます。</p>
+    <p>グラフをクリックすることでデータのフィルタリング、地図上のポイントをクリックをすることで詳細の表示がおこなえます。</p>
     <p><buttion id="resetBtn">Reset</buttion></p>
 
     <div class="area">
