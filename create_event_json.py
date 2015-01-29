@@ -37,9 +37,9 @@ def main(argvs, argc):
         for category in event.xpath('./category_list/category'):
             item['category'].append(category.text)
 
-        item['holiday'] = []
-        for holiday in event.xpath('./holiday_list/holiday'):
-            item['holiday'].append(holiday.text)
+        #item['holiday'] = []
+        #for holiday in event.xpath('./holiday_list/holiday'):
+        #    item['holiday'].append(holiday.text)
 
         item['image'] = event.find('image1_url').text
 

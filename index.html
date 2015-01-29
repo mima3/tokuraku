@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>とくらぐらふ</title>
+  <link rel="stylesheet" type="text/css" href="js/jquery.bxslider/jquery.bxslider.css"/>
+  <link rel="stylesheet" type="text/css" href="base.css"/>
+  <script type="text/javascript" src="js/jquery/jquery-1.11.1.min.js"></script>
+  <script type="text/javascript" src="js/jquery.bxslider/jquery.bxslider.js"></script>
+</head>
+<body>
+  <?php include 'header.html'; ?>
+
+  <div id="contents">
+    <h1>とくらぐらふ</h1>
+    <p>「とくらぐらふ」では、<a href="http://www.tokyuensen.com/special/contest2014/">「とくらくからの提供データ」</a>を用いて様々なグラフを描画します。</p>
+    <p>記述したグラフに様々なフィルタを動的に付与して、様々な「気づき」を発見することができます。</p>
+    <h2><a href="chiikikatsudo.html">地域活動データ</a></h2>
+    <p>東急沿線にお住いの方のアンケート調査結果「地域活動データ」から作成されたグラフです。</p>
+    <p>円グラフ中の各項目をクリックすることでフィルタリングができます。</p>
+    <ul class="bxslider">
+      <li><img src="img/help01_001.png" title="性別、年代の円グラフ" alt=""/></li>
+      <li><img src="img/help01_002.png" title="行っている地域活動の円グラフ" alt=""/></li>
+      <li><img src="img/help01_003.png" title="在住地域で関わりたいと思う地域活動" alt=""/></li>
+      <li><img src="img/help01_004.png" title="グラフ中の項目をクリックしてフィルタリングができます。<BR>ここでは、60歳以上をフィルタリングしています。" alt=""/></li>
+      <li><img src="img/help01_005.png" title="複数の組み合わせでフィルタリングが可能です。<BR>ここでは、60歳以上の男性をフィルタリングしています。" alt=""/></li>
+      <li><img src="img/help01_006.png" title="「Reset」ボタンを押すことで全てのフィルタを解除できます。" alt=""/></li>
+    </ul>
+    <h2><a href="kanji.html">暮らし向きを表す漢字一文字</a></h2>
+    <p>東急沿線にお住いの方のアンケート調査結果、「暮らし向きを表す漢字一文字」から作成されたグラフです。</p>
+    <p>各グラフの項目またはワードクラウドの漢字をクリックすることで、項目のフィルタリングを行えます。</p>
+    <ul class="bxslider">
+      <li><img src="img/help02_001.png" title="アンケート実施年月、性別、年代ごとに頻出文字の上位200文字を表示します。" alt=""/></li>
+      <li><img src="img/help02_002.png" title="グラフの各項目をクリックすることで、フィルタリングが可能です。<BR>この例では2014年、男性、60歳以上を対象としています。" alt=""/></li>
+      <li><img src="img/help02_003.png" title="また漢字をクリックすることで、その漢字が拡大され、頻出した年月、性別、年代を調べることができます。<BR>この例では「税」という単語に注目しています。消費税の影響であることがアンケート実施年月より読み取れます。" alt=""/></li>
+    </ul>
+    <h2><a href="kouhukudo.html">幸福度データ</a></h2>
+    <p>東急沿線にお住いの方のアンケート調査結果、「幸福度データ」から作成されたグラフです。</p>
+    <p>アンケート実施年、性別、年代の項目をクリックすることでフィルタリングが可能です。</p>
+    <ul class="bxslider">
+      <li><img src="img/help03_001.png" title="「現在と５年後の幸福度」では、横軸を現在の幸福度を現し、縦軸が５年後の幸福度となります。これは数が多いほど幸福を感じています。" alt=""/></li>
+      <li><img src="img/help03_002.png" title="アンケート実施年、性別、年代の各項目をクリックすることでフィルタリングが行えます。" alt=""/></li>
+      <li><img src="img/help03_003.png" title="「現在と５年後の幸福度」のポイントをクリックすることで、その回答を行ったアンケート実施年、性別、年代を調べることもできます。" alt=""/></li>
+    </ul>
+    <h2><a href="passenger.html">鉄道各駅乗降客数データ</a></h2>
+    <p>とくらく提供データの全駅一日平均乗降客数を地図上に表示します。</p>
+    <p>この際、国土数値情報の行政区域、駅情報、バス路線と政府統計の総合窓口の人口総数と全産業従業者数と共に表示が可能です。</p>
+    <p>また、調査年、定期、駅によるフィルタリングを行えます。</p>
+    <ul class="bxslider">
+      <li><img src="img/help04_001.png" title="駅別の一日の平均乗降人数を円の大きさであらわして地図に表示しています。<BR>地図はマウスのドラッグで移動、ホイールで拡大、縮小が行えます。" alt=""/></li>
+      <li><img src="img/help04_002.png" title="調査年、定期グラフの各項目をクリックすることでフィルタリングが可能です。" alt=""/></li>
+      <li><img src="img/help04_003.png" title="各駅をクリックすることで、その駅における調査年、定期の割合を調べることができます。" alt=""/></li>
+      <li><img src="img/help04_004.png" title="「表示するメッシュ」において、政府統計の総合窓口が提供する地域メッシュをどれか一つ選択できます。<BR>ここでは平成２１年経済センサス　全作業従業者数を表示しており、色が濃いところほど多数の従業者がいます。" alt=""/></li>
+      <li><img src="img/help04_005.png" title="「表示する交通機関」において、国土数値情報が提供する鉄道とバスのルートを選択して、表示することができます。<BR>交通機関は複数同時に表示することができます。</BR>" alt=""/></li>
+    </ul>
+    <h2><a href="event.html">東急沿線イベント情報データ</a></h2>
+    <p>とくらく提供データの東急沿線イベント情報データを地図上に表示します。</p>
+    <p>月別のイベント数、カテゴリーの割合をグラフで表示し、フィルタリングが行えます。</p>
+    <ul class="bxslider">
+      <li><img src="img/help05_001.png" title="月別のイベント数、カテゴリ毎の数をグラフで表します。<BR>グラフ中の項目をクリックすることでフィルタリングが可能です。" alt=""/></li>
+      <li><img src="img/help05_002.png" title="地図上にイベントの開催位置をプロットし、東急沿線のどのあたりにイベントが集中しているか調べることが可能です。<BR>地図はマウスのドラッグで移動、ホイールで拡大、縮小が行えます。" alt=""/></li>
+      <li><img src="img/help05_003.png" title="地図上にプロットされた点をクリックすることでイベントの概要が表示されます。<BR>表示されたウィンドウはマウスのドラッグ、ホイールで消えます。" alt=""/></li>
+      <li><img src="img/help05_004.png" title="開始日付と終了日付を入力して「日付でフィルタリング」を行うことが可能です。<BR>「日付フィルタ解除」でフィルタを解除できます。" alt=""/></li>
+    </ul>
+  <script  type="text/javascript">
+    $(function() {
+      $(document).ready(function() {
+        $('.bxslider').bxSlider({
+          mode: 'fade',
+          captions: true
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>

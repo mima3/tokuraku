@@ -21,7 +21,8 @@
   <script type="text/javascript" src="js/dateformat.js"></script>
   <script type="text/javascript" src="js/util.js"></script>
   <script id="tooltipTmpl" type="text/x-jsrender">
-    <p> {{:name}} </p>
+    <p> {{:name}} {{if official_url}}<a href="{{:official_url}}" target="_blank">LINK</a>{{/if}}
+    </p>
     {{if image}}
       <img src="{{:image}}" class="btn_icon" width="280px" alt=""></img>
     {{/if}}
