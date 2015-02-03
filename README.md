@@ -16,6 +16,16 @@ https://github.com/mima3/estat
 https://github.com/mima3/kokudo  
 
 
+「とくらくからの提供データ」からの変換用スクリプト
+-------------
+「とくらくからの提供データ」の乗降人員をpassanger.csvに変換する  
+
+    python create_passanger.py data\2005_2013\*.csv data\passanger.csv
+
+「とくらくからの提供データ」のイベント情報をevent.jsonに変換する  
+
+    python create_event_json.py data\export_event.xml data\event.json
+
 ライセンス
 -------------
 当方が作成したコードに関してはMITとします。  

@@ -90,6 +90,7 @@ def analyze_year_row(row):
 def main(argvs, argc):
     if argc != 3:
         print ("Usage #python %s search_str outputpath" % argvs[0])
+        print ("search_str: data\\*.csv")
         return 1
     search_str = argvs[1]
     output_path = argvs[2]
